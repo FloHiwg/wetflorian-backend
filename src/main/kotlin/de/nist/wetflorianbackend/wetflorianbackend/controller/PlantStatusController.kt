@@ -1,5 +1,6 @@
 package de.nist.wetflorianbackend.wetflorianbackend.controller
 
+import de.nist.wetflorianbackend.wetflorianbackend.entity.Plant
 import de.nist.wetflorianbackend.wetflorianbackend.entity.PlantStatus
 import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantRepository
 import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantStatusRepository
@@ -24,15 +25,16 @@ class PlantStatusController {
     }
 
     @GetMapping
-    fun findAll() {
-        plantStatusRepository.findAll()
+    fun findAll() : List<PlantStatus> {
         logger.info("All PlantStatus requested")
+        return plantStatusRepository.findAll()
     }
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: Long) {
-        var plantStatus = plantStatusRepository.findById(id)
+    fun getById(@PathVariable id: Long) : Any {
+        var plantStatus: Any = plantStatusRepository.findById(id)
         logger.info("PlantStatus with id: " + id + " requested and PlantStatus retrieved: " + plantStatus)
+        return plantStatus
     }
 
     @PostMapping
