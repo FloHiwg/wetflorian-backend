@@ -41,7 +41,7 @@ class PlantController {
 
     @GetMapping("/{plantId}/plant-status")
     fun retrievePlantStatusOfPlant(@PathVariable plantId: Long): List<PlantStatus> {
-        var plant: Optional<Plant> = plantRepository.findById(plantId)
+        logger.info("PlantStatus of plant with id: {plantId} got requested",plantId)
         var plantList = plantStatusRepository.findAll().filter{ it.plant!!.id == plantId }
         return plantList
     }
