@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class PlantStatusControllerThread: Thread {
+class PlantStatusServiceThread: Thread {
 
     var socket: DatagramSocket? = null
     var logger: Logger
@@ -31,7 +31,7 @@ class PlantStatusControllerThread: Thread {
 
     @Throws(IOException::class)
     constructor() {
-        logger = LoggerFactory.getLogger(PlantStatusControllerThread::class.java)
+        logger = LoggerFactory.getLogger(PlantStatusServiceThread::class.java)
     }
 
     override fun run() {
