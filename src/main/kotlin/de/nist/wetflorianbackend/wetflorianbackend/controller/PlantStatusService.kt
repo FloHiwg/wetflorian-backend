@@ -59,7 +59,7 @@ class PlantStatusControllerThread: Thread {
 
                 if(plant == null) {
                     logger.info("No plant with same ip found. Create new plant entity")
-                    plant = plantRepository.save(Plant(0, ip, hostname))
+                    plant = plantRepository.save(Plant(ip, hostname))
                     logger.info("New plant entity created: " + plant)
                 } else {
                     plant = plantRepository.findByIp(ip)

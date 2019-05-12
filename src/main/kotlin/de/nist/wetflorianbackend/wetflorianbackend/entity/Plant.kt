@@ -1,9 +1,10 @@
 package de.nist.wetflorianbackend.wetflorianbackend.entity
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonIdentityInfo
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonView
+import javax.persistence.*
 
 @Entity
 data class Plant(
@@ -13,5 +14,7 @@ data class Plant(
 
     val ip: String,
 
-    val name: String)
+    val name: String) {
 
+        constructor(ip: String, name: String) : this(0, ip, name)
+}
