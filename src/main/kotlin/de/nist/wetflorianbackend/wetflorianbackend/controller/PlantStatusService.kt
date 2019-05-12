@@ -1,5 +1,6 @@
 package de.nist.wetflorianbackend.wetflorianbackend.controller
 
+import de.nist.wetflorianbackend.wetflorianbackend.config.ConfigProperties
 import de.nist.wetflorianbackend.wetflorianbackend.entity.Plant
 import de.nist.wetflorianbackend.wetflorianbackend.entity.PlantStatus
 import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantRepository
@@ -9,16 +10,15 @@ import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.util.*
-import org.dom4j.dom.DOMNodeHelper.getData
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import javax.swing.text.html.parser.Parser
 
 @Component
 class PlantStatusControllerThread: Thread {
 
     var socket: DatagramSocket? = null
+    var logger: Logger
 
     @Autowired
     lateinit var plantRepository: PlantRepository
@@ -26,7 +26,8 @@ class PlantStatusControllerThread: Thread {
     @Autowired
     lateinit var plantStatusRepository: PlantStatusRepository
 
-    lateinit var logger: Logger
+    @Autowired
+    lateinit var properties: ConfigProperties
 
     @Throws(IOException::class)
     constructor() {
@@ -34,29 +35,30 @@ class PlantStatusControllerThread: Thread {
     }
 
     override fun run() {
-        socket = DatagramSocket(4444)
+        socket = DatagramSocket(properties.port)
         logger.info("PlantStatusService started and listening on port: " + socket!!.port)
         while (true) {
             try {
                 var plant: Plant?
                 var plantStatus: PlantStatus?
+                var reqBuf = ByteArray(256)
 
-                var buf = ByteArray(256)
-
-                // receive request
-                var packet = DatagramPacket(buf, buf.size)
+                //Receive Datagrampacket
+                var packet = DatagramPacket(reqBuf, reqBuf.size)
                 socket!!.receive(packet)
 
+                //Save sender information
                 val address = packet.address
                 val hostname: String = packet.address.hostName
                 val ip: String = packet.address.hostAddress
                 val port = packet.port
 
+                //Get payload
                 val msg = String(packet.data, packet.offset, packet.length)
                 logger.info("Datagram received: " + packet)
 
+                //Check if sender is already known and if not, create a new one
                 plant = plantRepository.findByIp(ip)
-
                 if(plant == null) {
                     logger.info("No plant with same ip found. Create new plant entity")
                     plant = plantRepository.save(Plant(ip, hostname))
@@ -66,16 +68,17 @@ class PlantStatusControllerThread: Thread {
                     logger.info("Plant entity found: " + plant)
                 }
 
+                //Create PlantStatus
                 plantStatus = plantStatusRepository.save(PlantStatus(0, plant, Date(), msg))
                 logger.info("New PlantStatus entity created: " + plantStatus)
 
 
 
-                // figure out response
-                var dString: String? = "Message received: " + plant.toString()
-                buf = dString!!.toByteArray()
+                //
+                var responsePayload: String? = "Message received: " + plant.toString()
+                var responseBuf = responsePayload!!.toByteArray()
 
-                packet = DatagramPacket(buf, buf.size, address, port)
+                packet = DatagramPacket(responseBuf, responseBuf.size, address, port)
                 socket!!.send(packet)
 
             } catch (e: IOException) {
