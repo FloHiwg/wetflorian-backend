@@ -77,7 +77,6 @@ class PlantStatusControllerThread: Thread {
 
                 packet = DatagramPacket(buf, buf.size, address, port)
                 socket!!.send(packet)
-                socket!!.close()
 
             } catch (e: IOException) {
                 e.printStackTrace()
