@@ -1,7 +1,7 @@
-package de.nist.wetflorianbackend.wetflorianbackend
+package de.nist.wetflorianbackend
 
-import de.nist.wetflorianbackend.wetflorianbackend.config.ConfigProperties
-import de.nist.wetflorianbackend.wetflorianbackend.controller.PlantStatusServiceThread
+import de.nist.wetflorianbackend.config.ConfigProperties
+import de.nist.wetflorianbackend.controller.PlantStatusServiceThread
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication

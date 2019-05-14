@@ -1,4 +1,4 @@
-package de.nist.wetflorianbackend.wetflorianbackend.config
+package de.nist.wetflorianbackend.config
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.info.BuildProperties

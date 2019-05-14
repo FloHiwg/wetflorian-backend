@@ -1,4 +1,4 @@
-package de.nist.wetflorianbackend.wetflorianbackend.entity
+package de.nist.wetflorianbackend.entity
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonIdentityInfo

@@ -1,10 +1,10 @@
-package de.nist.wetflorianbackend.wetflorianbackend.controller
+package de.nist.wetflorianbackend.controller
 
-import de.nist.wetflorianbackend.wetflorianbackend.config.ConfigProperties
-import de.nist.wetflorianbackend.wetflorianbackend.entity.Plant
-import de.nist.wetflorianbackend.wetflorianbackend.entity.PlantStatus
-import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantRepository
-import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantStatusRepository
+import de.nist.wetflorianbackend.config.ConfigProperties
+import de.nist.wetflorianbackend.entity.Plant
+import de.nist.wetflorianbackend.entity.PlantStatus
+import de.nist.wetflorianbackend.repository.PlantRepository
+import de.nist.wetflorianbackend.repository.PlantStatusRepository
 import org.springframework.beans.factory.annotation.Autowired
 import java.io.IOException
 import java.net.DatagramPacket

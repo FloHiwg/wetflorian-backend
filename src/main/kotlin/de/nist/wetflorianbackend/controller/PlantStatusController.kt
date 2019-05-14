@@ -1,9 +1,9 @@
-package de.nist.wetflorianbackend.wetflorianbackend.controller
+package de.nist.wetflorianbackend.controller
 
-import de.nist.wetflorianbackend.wetflorianbackend.entity.Plant
-import de.nist.wetflorianbackend.wetflorianbackend.entity.PlantStatus
-import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantRepository
-import de.nist.wetflorianbackend.wetflorianbackend.repository.PlantStatusRepository
+import de.nist.wetflorianbackend.entity.Plant
+import de.nist.wetflorianbackend.entity.PlantStatus
+import de.nist.wetflorianbackend.repository.PlantRepository
+import de.nist.wetflorianbackend.repository.PlantStatusRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
