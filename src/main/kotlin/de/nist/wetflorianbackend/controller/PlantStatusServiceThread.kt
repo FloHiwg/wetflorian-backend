@@ -44,42 +44,41 @@ class PlantStatusServiceThread: Thread {
                 var reqBuf = ByteArray(256)
 
                 //Receive Datagrampacket
-                var packet = DatagramPacket(reqBuf, reqBuf.size)
-                socket!!.receive(packet)
+                var reqPacket = DatagramPacket(reqBuf, reqBuf.size)
+                socket!!.receive(reqPacket)
 
-                //Save sender information
-                val address = packet.address
-                val hostname: String = packet.address.hostName
-                val ip: String = packet.address.hostAddress
-                val port = packet.port
+                //Save sender tracermation
+                val senderAddress = reqPacket.address
+                val senderHostname: String = reqPacket.address.hostName
+                val senderIp: String = reqPacket.address.hostAddress
+                val senderPort = reqPacket.port
 
                 //Get payload
-                val msg = String(packet.data, packet.offset, packet.length)
-                logger.info("Datagram received: " + packet)
+                val senderMsg = String(reqPacket.data, reqPacket.offset, reqPacket.length)
+                logger.trace("Datagram received: " + reqPacket)
 
                 //Check if sender is already known and if not, create a new one
-                plant = plantRepository.findByIp(ip)
+                plant = plantRepository.findByIp(senderIp)
                 if(plant == null) {
-                    logger.info("No plant with same ip found. Create new plant entity")
-                    plant = plantRepository.save(Plant(ip, hostname))
-                    logger.info("New plant entity created: " + plant)
+                    logger.trace("No plant with same ip found. Create new plant entity")
+                    plant = plantRepository.save(Plant(senderIp, senderHostname))
+                    logger.trace("New plant entity created: " + plant)
                 } else {
-                    plant = plantRepository.findByIp(ip)
-                    logger.info("Plant entity found: " + plant)
+                    plant = plantRepository.findByIp(senderIp)
+                    logger.trace("Plant entity found: " + plant)
                 }
 
                 //Create PlantStatus
-                plantStatus = plantStatusRepository.save(PlantStatus(0, plant, Date(), msg))
-                logger.info("New PlantStatus entity created: " + plantStatus)
+                plantStatus = plantStatusRepository.save(PlantStatus(0, plant, Date(), senderMsg))
+                logger.trace("New PlantStatus entity created: " + plantStatus)
 
 
-
-                //
+                // Setup message
                 var responsePayload: String? = "Message received: " + plant.toString()
                 var responseBuf = responsePayload!!.toByteArray()
 
-                packet = DatagramPacket(responseBuf, responseBuf.size, address, port)
-                socket!!.send(packet)
+                reqPacket = DatagramPacket(responseBuf, responseBuf.size, senderAddress, senderPort)
+                socket!!.send(reqPacket)
 
             } catch (e: IOException) {
                 e.printStackTrace()
