@@ -35,7 +35,7 @@ class SwaggerConfig {
                 .apiInfo(apiInfo(version))
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths{ it.equals("/plant-status").or(it.equals("/plants")) }
+                .paths{ it.equals("/plant-status").or(it.equals("/plants")).or(it.equals("/plants/{id}")).or(it.equals("/plants/{id}/plant-status")) }
                 .build()
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(true)
